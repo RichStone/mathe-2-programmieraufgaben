@@ -58,7 +58,7 @@ public class testDet {
     }
 
     //Schreibt die Matrix M in die Konsole; die Koeffizienten werden auf nrOfDigits Stellen gerundet. 
-    public void showMatrix(double[][] M, int nrOfDigits){
+    public static void showMatrix(double[][] M, int nrOfDigits){
         int m = M.length;
         int n = M[0].length;
         //boolean hasNoNegativeEntry = true;
