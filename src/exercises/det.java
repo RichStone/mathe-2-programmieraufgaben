@@ -18,24 +18,33 @@ public class det {
         }
         
         //TODO Zeilenverschiebung versuchen, falls erste Zeile nicht mit 1 anfängt
-        
-        for(int i = 0; i < 1; i++) {
-        	for(int j = i; j < n; j++) {
-        		if(matrix[i][j] - 1 != 0) {
-//        			double[][] tempArr = new double[n - i][n - i];
-//        			for()
+        int j = 0;
+        int originalLine = 0;
+        int startI = 1;
+        for(int i = startI; i < n; i++) {
+        		if(matrix[i][j] - matrix[i][i] == 0) {
+        			matrix[i][j] = 0;
+					for(int x = j + 1; x < n; x++) {
+						matrix[i][x] = matrix[i][x] - matrix[originalLine][x];
+					}
+        			testDet.showMatrix(matrix, 1);
+        			System.out.println("\n if \n");
         		}
         		else {
-        			//subtract
-        			matrix[i + 1][j] = 0;
-        			for(int x = i + 1; x < n; x++) {
-        				matrix[x][j + 1] = matrix[x][j] - matrix[x][j + 1];
-        			}
+        			matrix[i][j] = matrix[i][0] * matrix[i][j] - matrix[i][j] * matrix[i][0];
+        			for(int x = j + 1; x < n; x++) {
+						matrix[i][x] = matrix[i][x] - matrix[originalLine][x];
+					}
+        			testDet.showMatrix(matrix, 1);
+        			System.out.println("\n");
         		}
-        	}
-        }
-        
-        testDet.showMatrix(matrix, 1);
+        		if(i == n - 1) {
+        			j++;
+        			startI++;
+        			originalLine++;
+        			i = originalLine;
+        		}
+        }        
         return Double.NaN;
     }
 
