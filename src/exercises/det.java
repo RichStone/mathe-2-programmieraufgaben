@@ -52,7 +52,7 @@ public class det
         			
         			//calculate the other columns
         			for(int currentColumn = originalColumn + 1; currentColumn < n; currentColumn++) {
-						matrix[currentRow][currentColumn] = matrix[originalRow][currentColumn] * multiplicatorLowerRow - matrix[currentRow][currentColumn] * multiplicatorOriginalRow;
+						matrix[currentRow][currentColumn] =  matrix[currentRow][currentColumn] * multiplicatorOriginalRow - matrix[originalRow][currentColumn] * multiplicatorLowerRow;
 						//count the multiplications
 	        			nrOfMult++;
 	        			nrOfMult++;
@@ -79,7 +79,7 @@ public class det
         			}
         			return diagonalenProdukt;
         		}
-        }        
+        }
         return Double.NaN;
     }
 
