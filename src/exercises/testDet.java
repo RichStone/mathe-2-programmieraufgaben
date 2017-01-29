@@ -29,6 +29,7 @@ public class testDet {
         System.out.println("det(A) = "+det.calcDet(A));
         System.out.println("Anzahl der Multiplikationen: "+det.nrOfMult);
         System.out.println("det(A) rekursiv: " + det.calcDetRec(A));
+        System.out.println("Anzahl der Multiplikationen rekursiv: "+det.nrOfMultRec);
     }
 
     //Liest die quadratische Matrix aus einer Textdatei; s. Programmieraufgaben.pdf bezüglich des Formats.
@@ -73,7 +74,7 @@ public class testDet {
         int l;
         if (max==0) l = 5;
         else l = (int) Math.log10(Math.abs(max))+nrOfDigits+5;//+1: log, +1: sign, +1: point, +1
-        if (nrOfDigits==0) l--;
+        if (nrOfDigits == 0) l--;
         //if (hasNoNegativeEntry) l--;
 
         String f, s;

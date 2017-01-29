@@ -1,5 +1,7 @@
 package exercises;
 
+import java.util.ArrayList;
+
 public class det 
 {
     public static int nrOfMult;
@@ -18,72 +20,68 @@ public class det
         }
         if(n == 2) {
         	return (matrix[0][0] * matrix[1][1]) - (matrix[0][1] * matrix[1][0]);
-        }
-        
-        //TODO Zeilenverschiebung versuchen, falls erste Zeile nicht mit 1 anfängt
-        
+        }        
         
         int originalColumn = 0;
         int originalRow = 0;
         int startRow = 1; //line to start the iteration
+        ArrayList<Double> detMultiplicators = new ArrayList<Double>();
         for(int currentRow = startRow; currentRow < n; currentRow++) 
         {
-        		//check if multiplications are necessary
-        		double diagonalValue = matrix[originalRow][originalColumn];
-        		if(matrix[currentRow][originalColumn] - diagonalValue == 0) {
-        			
-        			matrix[currentRow][originalColumn] = 0;
-        			
-        			//update the other columns
-					for(int currentColumn = originalColumn + 1; currentColumn < n; currentColumn++) {
-						matrix[currentRow][currentColumn] = matrix[currentRow][currentColumn] - matrix[originalRow][currentColumn];
-					}
-					//test prints
-        			testDet.showMatrix(matrix, 1);
-        			System.out.println("\n if \n");
-        		}
-        		else {
-        			//get the multiplicators to perform a remainderless subtraction
-        			double multiplicatorOriginalRow = diagonalValue;
-        			double multiplicatorLowerRow = matrix[currentRow][originalColumn];
-        			
-        			//imitate the subtraction (no need for multiplications because we already know it is zero)
-        			matrix[currentRow][originalRow] = 0;
-        			
-        			//calculate the other columns
-        			for(int currentColumn = originalColumn + 1; currentColumn < n; currentColumn++) {
-						matrix[currentRow][currentColumn] =  matrix[currentRow][currentColumn] * multiplicatorOriginalRow - matrix[originalRow][currentColumn] * multiplicatorLowerRow;
-						//count the multiplications
-	        			nrOfMult++;
-	        			nrOfMult++;
-					}
-        			
-        			//test prints
-        			testDet.showMatrix(matrix, 1);
-        			System.out.println("\n");
-        		}
-        		if(currentRow == n - 1) {
-        			originalColumn++;
-        			startRow++;
-        			originalRow++;
-        			currentRow = originalRow;
-        		}
-        		//Abbruchbedingung
-        		if(matrix[n - 1][n - 2] == 0) {
-        			double diagonalenProdukt = 1;
-        			int diagonalenCounter = 0;
-        			while(diagonalenCounter < n) {
-        				diagonalenProdukt *= matrix[diagonalenCounter][diagonalenCounter];
-        				diagonalenCounter++;
-        				nrOfMult++;
-        			}
-        			return diagonalenProdukt;
-        		}
-        }
-        return Double.NaN;
-    }
+        	double diagonalValue = matrix[originalRow][originalColumn];
+    		if(diagonalValue != 1) {
+    			double divisor = diagonalValue;
+    			for(int x = originalColumn; x < n; x++) {
+    				matrix[originalRow][x] /= divisor;
+    			}
+    			detMultiplicators.add(divisor);
+    		}
+    		if(matrix[currentRow][originalColumn] - diagonalValue == 0) {
+    			
+    			matrix[currentRow][originalColumn] = 0;
+    			
+    			//update the other columns
+				for(int currentColumn = originalColumn + 1; currentColumn < n; currentColumn++) {
+					matrix[currentRow][currentColumn] = matrix[currentRow][currentColumn] - matrix[originalRow][currentColumn];
+				}
+    		}
+    		else {
+    			double multiplicator = matrix[currentRow][originalColumn];
+    			//imitate the subtraction (no need for multiplications or real subtractions because we already know it is zero)
+    			matrix[currentRow][originalColumn] = 0;
+    			
+    			//calculate the other columns
+    			for(int currentColumn = originalColumn + 1; currentColumn < n; currentColumn++) {
+					matrix[currentRow][currentColumn] =   matrix[currentRow][currentColumn] - matrix[originalRow][currentColumn] * multiplicator;
+					//count the multiplications
+        			nrOfMult++;
+				}
+    		}
 
-    //TODO add multiplication counter
+    		if(currentRow == n - 1) {
+    			originalColumn++;
+    			startRow++;
+    			originalRow++;
+    			currentRow = originalRow;
+    		}
+        }
+        //calculate det from diagonal line
+        double det = 1;
+        for(int i = 0; i < n; i++) {
+        	det *= matrix[i][i];
+        	nrOfMult++;
+        }
+        if(!detMultiplicators.isEmpty()) {
+        	for(int i = 0; i < detMultiplicators.size(); i++) {
+        		det *= detMultiplicators.get(i);
+        	}
+        }
+        //test print
+        System.out.println("det(A): \n");
+		testDet.showMatrix(matrix, 1);
+		System.out.println("\n");
+        return det;
+    }
     
     public static double calcDetRec(double[][] matrix)
     {
@@ -91,7 +89,7 @@ public class det
 		
 		double res = 0;
 		for (int i = 0; i < matrix.length; i++) {
-
+			//stop statement
 			if (matrix.length - 1 == 0) {
 				return matrix[0][0];
 			}
@@ -99,14 +97,13 @@ public class det
 			
 			//calculate result of each submatrix
 			res = ((Math.pow(-1, (0 + i))) * matrix[i][0]) * calcDetRec(subMatrix);
-			
+			nrOfMultRec++;
 			det = det + res;
 		}
 
 		return det;
 	}
 
-	// Gibt Submatrix zurück
 	private static double[][] createSubmatrix(double[][] matrix, int x, int y) 
 	{
 		int newSize = matrix.length - 1;
