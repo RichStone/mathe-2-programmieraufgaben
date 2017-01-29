@@ -28,6 +28,7 @@ public class testDet {
         det.nrOfMult = 0;
         System.out.println("det(A) = "+det.calcDet(A));
         System.out.println("Anzahl der Multiplikationen: "+det.nrOfMult);
+        System.out.println("det(A) rekursiv: " + det.calcDetRec(A));
     }
 
     //Liest die quadratische Matrix aus einer Textdatei; s. Programmieraufgaben.pdf bezüglich des Formats.
