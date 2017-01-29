@@ -14,7 +14,7 @@ public class testDet {
     }
     public void test(String filename){
         A = readMatrixFromFile(filename);
-        if (A==null) return;
+        if (A == null) return;
         if (A.length!=A[0].length){
             System.out.println("Die Matrix in "+filename+" ist nicht quadratisch.");
             return;

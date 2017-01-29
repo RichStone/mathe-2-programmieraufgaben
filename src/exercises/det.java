@@ -22,33 +22,38 @@ public class det
         
         //TODO Zeilenverschiebung versuchen, falls erste Zeile nicht mit 1 anfängt
         
-        int j = 0;
-        int originalLine = 0;
-        int startI = 1;
-        for(int i = startI; i < n; i++) {
-        		if(matrix[i][j] - matrix[i][i] == 0) {
-        			matrix[i][j] = 0;
-					for(int x = j + 1; x < n; x++) {
-						matrix[i][x] = matrix[i][x] - matrix[originalLine][x];
+        
+        int originalColumn = 0;
+        int originalRow = 0;
+        int startRow = 1; //line to start the iteration
+        for(int row = startRow; row < n; row++) 
+        {
+        		//check if multiplications are necessary
+        		double diagonalValue = matrix[row][row];
+        		if(matrix[row][originalColumn] - diagonalValue == 0) {
+        			matrix[row][originalColumn] = 0;
+					for(int col = originalColumn + 1; col < n; col++) {
+						matrix[row][col] = matrix[row][col] - matrix[originalRow][col];
 					}
         			testDet.showMatrix(matrix, 1);
         			System.out.println("\n if \n");
         		}
         		else {
-        			matrix[i][j] = matrix[i][0] * matrix[i][j] - matrix[i][j] * matrix[i][0];
+        			matrix[row][originalColumn] = matrix[startRow - 1][originalRow] * matrix[row][originalColumn] - matrix[row][originalColumn] * matrix[row][originalRow];
         			nrOfMult++;
         			nrOfMult++;
-        			for(int x = j + 1; x < n; x++) {
-						matrix[i][x] = matrix[i][x] - matrix[originalLine][x];
+        			
+        			for(int x = originalColumn + 1; x < n; x++) {
+						matrix[row][x] = matrix[row][originalRow] * matrix[row][x] - matrix[row][x] * matrix[originalRow][x];
 					}
         			testDet.showMatrix(matrix, 1);
         			System.out.println("\n");
         		}
-        		if(i == n - 1) {
-        			j++;
-        			startI++;
-        			originalLine++;
-        			i = originalLine;
+        		if(row == n - 1) {
+        			originalColumn++;
+        			startRow++;
+        			originalRow++;
+        			row = originalRow;
         		}
         		//Abbruchbedingung
         		if(matrix[n - 1][n - 2] == 0) {
